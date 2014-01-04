@@ -8,6 +8,10 @@
 #include <Drawable.hpp>
 #include <LineStripBatch.hpp>
 
+#include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Text.hpp>
+
 #include <string>
 
 // ----------------------------------------------------------------------------
@@ -45,6 +49,12 @@ public:
     void load( const std::string& configFile );
 
     /*!
+     * @brief Unloads the room
+     * This doesn't do anything other than stopping the room from being drawn
+     */
+    void unload();
+
+    /*!
      * @brief Draws the room to the specified render target
      */
     void draw( sf::RenderTarget* target, const sf::RenderStates& states ) const;
@@ -52,4 +62,12 @@ public:
 private:
 
     LineStripBatch m_Room;
+    sf::Vector2f m_A;
+    sf::Vector2f m_B;
+
+    sf::Text m_TextA;
+    sf::Text m_TextB;
+    sf::Font m_Font;
+
+    bool m_IsLoaded;
 };
