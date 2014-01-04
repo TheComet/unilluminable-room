@@ -39,7 +39,7 @@ void App::go()
 
     // set up zooming parameters
     float zoomLimitMax = 2.0f;
-    float zoomLimitMin = 0.125f;
+    float zoomLimitMin = 0.5f;
     float zoomSmoothnessFactor = 4.0f;
     float currentZoom = 1.0f, targetZoom = 1.0f;
     sf::Vector2f viewPosition(0.0f,0.0f);
@@ -113,6 +113,14 @@ void App::go()
         int maxUpdateLoops = 0;
         while( loopTimer.isTimeToUpdate() )
         {
+
+            // smooth zooming
+            float deltaZoom = (currentZoom-targetZoom)/zoomSmoothnessFactor;
+            currentZoom -= deltaZoom;
+
+            // adjust view position so zoom occurs under mouse
+            viewPosition.x += static_cast<float>(mousePosition.x)*deltaZoom/(currentZoom*currentZoom);
+            viewPosition.y += static_cast<float>(mousePosition.y)*deltaZoom/(currentZoom*currentZoom);
 
             // limit amount of update loops allowed
             if( ++maxUpdateLoops == 10 )
@@ -188,7 +196,7 @@ void App::go()
 
         // create render state
         sf::Transform transform;
-        transform.translate( viewPosition );
+        transform.translate( viewPosition*currentZoom );
         transform.scale( currentZoom, currentZoom );
         sf::RenderStates states;
         states.transform = transform;
