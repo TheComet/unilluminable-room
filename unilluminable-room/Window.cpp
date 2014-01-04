@@ -39,7 +39,7 @@ void Window::open( const std::string& configFile, const std::string& windowTitle
         std::string buffer;
         while( !file.eof() )
         {
-            file >> buffer;
+            std::getline( file, buffer );
             if( buffer.substr(0,11) == "resolution=" )
             {
                 std::size_t mid = buffer.find("x");
